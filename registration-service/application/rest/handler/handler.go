@@ -17,12 +17,14 @@ import (
 
 type Handler struct {
 	store contract.Storer
+	nc    contract.MSGBroker
 }
 
-func New(store contract.Storer) *Handler {
+func New(store contract.Storer, nc contract.MSGBroker) *Handler {
 
 	return &Handler{
 		store: store,
+		nc:    nc,
 	}
 }
 
@@ -76,5 +78,18 @@ func (h *Handler) HandleRegister(w http.ResponseWriter, r *http.Request) {
 	registration.RequestID = nuid.Next()
 	fmt.Println(registration)
 
-	json.NewEncoder(w).Encode(registration)
+	tokenNo := gentoken.GenerateTokenNumber(0)
+	registration_event := model.RegistrationEvent{registration.ID, tokenNo}
+	reg_event, err := json.Marshal(registration_event)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	log.Printf("requestID:%s - Publishing registration event with patientID %d\n",
+		registration.RequestID, registration.ID)
+
+	h.nc.Publish("patient.register", reg_event)
+
+	json.NewEncoder(w).Encode(registration_event)
 }
