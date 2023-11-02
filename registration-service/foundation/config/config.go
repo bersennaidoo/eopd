@@ -6,6 +6,7 @@ import (
 	"log"
 	"sync"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nuid"
 )
@@ -75,7 +76,7 @@ func (c *Config) SetupConnectionToNATS(servers string, options ...nats.Option) e
 
 	// Setup NATS event callbacks
 	// Handle protocol errors and slow consumers cases.
-	nc.SetErrorHandler(func(_ *nat.Conn, _ *nat.Subscription, err error) {
+	nc.SetErrorHandler(func(_ *nats.Conn, _ *nats.Subscription, err error) {
 		log.Printf("NATS error: %s\n", err)
 	})
 	nc.SetReconnectHandler(func(_ *nats.Conn) {

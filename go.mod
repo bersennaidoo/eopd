@@ -3,6 +3,8 @@ module github.com/bersennaidoo/eopd
 go 1.21.0
 
 require (
+	github.com/go-sql-driver/mysql v1.7.1
+	github.com/gorilla/mux v1.8.0
 	github.com/nats-io/nats.go v1.31.0
 	github.com/nats-io/nuid v1.0.1
 )
