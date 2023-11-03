@@ -23,6 +23,8 @@ func (r *Route) Router() *mux.Router {
 
 	router.HandleFunc("/", r.handler.HandleTest).Methods("GET")
 	router.HandleFunc("/register", r.handler.HandleRegister).Methods("POST")
+	router.HandleFunc("/update", r.handler.HandleUpdate).Methods("PUT")
+	router.HandleFunc("/view/{id}", r.handler.HandleView).Methods("GET")
 
 	return router
 }

@@ -6,9 +6,9 @@ import (
 	"github.com/bersennaidoo/eopd/registration-service/application/rest/handler"
 	"github.com/bersennaidoo/eopd/registration-service/application/rest/router"
 	"github.com/bersennaidoo/eopd/registration-service/application/rest/server"
-	"github.com/bersennaidoo/eopd/registration-service/foundation/config"
 	"github.com/bersennaidoo/eopd/registration-service/infrastructure/msgbroker"
 	"github.com/bersennaidoo/eopd/registration-service/infrastructure/storage"
+	"github.com/bersennaidoo/eopd/registration-service/physical/config"
 	"github.com/nats-io/nats.go"
 )
 
