@@ -17,9 +17,16 @@ type CFGData struct {
 func NewCFGData() CFGData {
 
 	viper.SetConfigName("config")
+
 	viper.SetConfigType("yaml")
+
 	viper.AddConfigPath("./registration-service")
 	viper.AddConfigPath(".")
+
+	viper.SetDefault("environments.dev.port", ":3000")
+	viper.SetDefault("environments.dev.dsn", "root:bersen@/eopd")
+	viper.SetDefault("environments.dev.dbdriver", "mysql")
+	viper.SetDefault("environments.dev.ndsn", "0.0.0.0:4222")
 
 	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("err: %w", err))
