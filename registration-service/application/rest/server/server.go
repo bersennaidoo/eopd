@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -33,5 +34,5 @@ func (s *Server) ListenAndServe() {
 	}
 
 	fmt.Println("Listening on port ", s.addr)
-	srv.ListenAndServe()
+	log.Fatal(srv.ListenAndServe())
 }

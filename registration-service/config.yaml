@@ -1,0 +1,6 @@
+environments:
+  dev:
+    port: :3000
+    dbdriver: mysql
+    dsn: root:bersen@/eopd
+    ndsn: 0.0.0.0:4222

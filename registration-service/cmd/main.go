@@ -9,19 +9,20 @@ import (
 	"github.com/bersennaidoo/eopd/registration-service/infrastructure/msgbroker"
 	"github.com/bersennaidoo/eopd/registration-service/infrastructure/storage"
 	"github.com/bersennaidoo/eopd/registration-service/physical/config"
-	"github.com/nats-io/nats.go"
 )
 
 func main() {
 
-	cfg := config.New("registration-service")
+	cfgdata := config.NewCFGData()
 
-	err := cfg.SetupConnectionToDB("mysql", "root:bersen@/eopd")
+	cfg := config.New("registration-service", cfgdata)
+
+	err := cfg.SetupConnectionToDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = cfg.SetupConnectionToNATS(nats.DefaultURL)
+	err = cfg.SetupConnectionToNATS()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,7 +39,7 @@ func main() {
 
 	route := router.New(handle)
 
-	server := server.New(":3000", route)
+	server := server.New(cfg.Cfgdata.Port, route)
 
 	server.ListenAndServe()
 }

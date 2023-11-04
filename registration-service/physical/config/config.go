@@ -16,6 +16,8 @@ import (
 type Config struct {
 	cmu sync.Mutex
 
+	Cfgdata CFGData
+
 	id string
 
 	nc *nats.Conn
@@ -25,21 +27,22 @@ type Config struct {
 	kind string
 }
 
-func New(kind string) *Config {
+func New(kind string, cfgdata CFGData) *Config {
 
 	id := nuid.Next()
 	return &Config{
-		id:   id,
-		kind: kind,
+		id:      id,
+		kind:    kind,
+		Cfgdata: cfgdata,
 	}
 }
 
 // SetupConnectionToDB creates a connection to the database and stores connection in Config.
-func (c *Config) SetupConnectionToDB(dbDriver string, connectionString string) error {
+func (c *Config) SetupConnectionToDB() error {
 
 	c.cmu.Lock()
 	defer c.cmu.Unlock()
-	db, err := sql.Open(dbDriver, connectionString)
+	db, err := sql.Open(c.Cfgdata.dbDriver, c.Cfgdata.dsn)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -59,7 +62,7 @@ func (c *Config) DB() *sql.DB {
 
 // SetupConnectionToNATS setup a connection to nats, registers callbacks and stores
 // connection in Config.
-func (c *Config) SetupConnectionToNATS(servers string, options ...nats.Option) error {
+func (c *Config) SetupConnectionToNATS(options ...nats.Option) error {
 
 	options = append(options, nats.Name(c.Name()))
 
@@ -67,7 +70,7 @@ func (c *Config) SetupConnectionToNATS(servers string, options ...nats.Option) e
 	defer c.cmu.Unlock()
 
 	// Connect to NATS with customized options.
-	nc, err := nats.Connect(servers, options...)
+	nc, err := nats.Connect(c.Cfgdata.ndsn, options...)
 	if err != nil {
 		return err
 	}
