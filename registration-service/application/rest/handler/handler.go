@@ -46,7 +46,7 @@ func (h *Handler) HandleToken(w http.ResponseWriter, r *http.Request) {
 
 	token := gentoken.GenerateTokenNumber(0)
 	patientID, _ := strconv.Atoi(mux.Vars(r)["id"])
-	fmt.Println("Token %d generated for user %d", token, patientID)
+	fmt.Printf("Token %d generated for user %d", token, patientID)
 
 	registration_event := model.RegistrationEvent{patientID, token}
 	reg_event, err := json.Marshal(registration_event)
@@ -79,7 +79,7 @@ func (h *Handler) HandleRegister(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Registers patient
-	h.store.Register(registration)
+	_ = h.store.Register(registration)
 
 	registration.RequestID = nuid.Next()
 	fmt.Println(registration)
@@ -117,7 +117,7 @@ func (h *Handler) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.store.Update(request)
+	_ = h.store.Update(request)
 
 	json.NewEncoder(w).Encode("Record for Patient updated successfully")
 }
@@ -127,7 +127,7 @@ func (h *Handler) HandleView(w http.ResponseWriter, r *http.Request) {
 
 	patientID := mux.Vars(r)["id"]
 
-	registration := h.store.View(patientID)
+	registration, _ := h.store.View(patientID)
 
 	fmt.Println(registration)
 
