@@ -10,7 +10,7 @@ import (
 
 func TestStore(t *testing.T) {
 
-	t.Run("register user", func(t *testing.T) {
+	t.Run("register patient", func(t *testing.T) {
 
 		registration := model.RegistrationRequest{
 			ID:       200,
@@ -31,7 +31,7 @@ func TestStore(t *testing.T) {
 		store.AssertExpectations(t)
 	})
 
-	t.Run("update user", func(t *testing.T) {
+	t.Run("update patient", func(t *testing.T) {
 
 		registration := model.RegistrationRequest{
 			FullName: "bersen naidoo",
@@ -52,7 +52,7 @@ func TestStore(t *testing.T) {
 		store.AssertExpectations(t)
 	})
 
-	t.Run("view user", func(t *testing.T) {
+	t.Run("view patient", func(t *testing.T) {
 
 		id := "200"
 
